@@ -187,30 +187,3 @@ st.map(df,
     size='col3')
 
 
-#================================================GRÁFICO DE LINHAS TK MÉDIO================================================#
-# Agrupa os dados por data e calcula a média do 'SKU Selling Price'
-dados_tkmédio = filtro_prod1.groupby('Creation Date').agg({'SKU Selling Price': 'mean', 'Order': 'count'}).reset_index()
-# Renomeie as colunas nos DataFrames tabela_anb e data_for_table_prod2_df
-dados_tkmédio.rename(columns={"SKU Selling Price": "Ticket Médio"}, inplace=True)
-
-# Criação do gráfico de linha com Plotly Express
-fig = px.line(dados_tkmédio, x='Creation Date', y='Ticket Médio', title='Ticket Médio ao longo do período')
-
-# Adicionando anotações para cada ponto
-prev_y = None
-for i in range(len(dados_tkmédio)):
-    if prev_y is None or dados_tkmédio['Ticket Médio'][i] != prev_y:
-        text = f"<b>R${dados_tkmédio['Ticket Médio'][i]:.2f}</b>"
-        if dados_tkmédio['Ticket Médio'][i] == dados_tkmédio['Ticket Médio'].max():
-            y_shift = 15  # Ajuste para rótulo de dados na parte superior
-        else:
-            y_shift = -15
-    else:
-        text = ""
-        y_shift = -20
-    fig.add_annotation(x=dados_tkmédio['Creation Date'][i], y=dados_tkmédio['Ticket Médio'][i],
-                    text=text, showarrow=False, xshift=5, yshift=y_shift)
-    prev_y = dados_tkmédio['Ticket Médio'][i]
-
-# Exibir o gráfico
-st.plotly_chart(fig, use_container_width=True)
