@@ -3,6 +3,7 @@ import pandas as pd
 from datetime import datetime as dt
 from components import arquivos
 import plotly.express as px
+import numpy as np
 
 st.set_page_config(page_title="Produtos", page_icon=" ", layout="wide")
     
@@ -169,6 +170,21 @@ for i in range(len(dados_estoque)):
 # Exibir o gráfico
 st.plotly_chart(figura, use_container_width=True)
 
+
+#================================================GRÁFICO DE MAPA================================================#
+
+dfmap = filtro_prod1.groupby(['lat', 'lon']).size().reset_index(name='count')
+
+df = pd.DataFrame({
+    "col1": dfmap['lat'],
+    "col2": dfmap['lon'],
+    "col3": dfmap['count'] * 1000,
+})
+
+st.map(df,
+    latitude='col1',
+    longitude='col2',
+    size='col3')
 
 
 #================================================GRÁFICO DE LINHAS TK MÉDIO================================================#
