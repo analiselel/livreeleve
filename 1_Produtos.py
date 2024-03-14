@@ -3,7 +3,6 @@ import pandas as pd
 from datetime import datetime as dt
 from components import arquivos
 import plotly.express as px
-import numpy as np
 
 st.set_page_config(page_title="Produtos", page_icon=" ", layout="wide")
     
